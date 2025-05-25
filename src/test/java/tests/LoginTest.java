@@ -1,24 +1,44 @@
 package tests;
 
-import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
 
 public class LoginTest extends BaseTest {
-    @Test
+
+    @Test(retryAnalyzer = Retry.class)
     public void checkSuccessLogin(){
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.id("user-name")).sendKeys("problem_user");
-        driver.findElement(By.id("password")).sendKeys("secret_sauce");
-        driver.findElement(By.id("login-button")).click();
-        String title = driver.findElement(By.cssSelector(".title")).getText();
-        Assert.assertEquals(title,
+        loginPage.open();
+        loginPage.login(user, password);
+        assertEquals(productsPage.getTitle(),
                 "Products",
                 "Логин не выполнен");
     }
 
-    @Test
-    public void checkLoginWithEmptyPassword(){
 
+    @Test(testName = "Проверка логина с пустым паролем", priority = 2, groups = "Login Page")
+    public void checkLoginWithEmptyPassword(){
+        loginPage.open();
+        loginPage.login(user, "");
+        assertEquals(loginPage.getErrorMessage(),
+                "Epic sadface: Password is requred",
+                "SO BAAAAD");
+    }
+
+
+    @Test(testName = "Проверка входа с неверным паролем", priority = 3, groups = "Login Page")
+    public void checkLoginWithWrongPassword(){
+        loginPage.open();
+        loginPage.login(user, "123123123123");
+        assertEquals(loginPage.getErrorMessage(),
+                "Epic sadface: Password is requred",
+                "SO BAAAAD");
+    }
+
+    @Test(dataProvider = "Hегативные тесты для логина")
+    public void login() {
+        loginPage.open();
+        loginPage.login(user, password);
+        assertEquals(loginPage.getErrorMessage(),
+                "SO BAAAAD");
     }
 }

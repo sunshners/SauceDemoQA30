@@ -8,6 +8,8 @@ public class LocatorTest extends BaseTest {
     @Test
     public void checkLocator(){
         driver.get("https://www.saucedemo.com/");
+        loginPage.open();
+        loginPage.login("standard_user", "secret_sauce");
         driver.findElement(By.id("user-name"));
         driver.findElement(By.name("user-name"));
         driver.findElement(By.className("error-message-container"));

@@ -3,45 +3,36 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePage {
+    public final By REMOVE_BUTTON = By.xpath("//button[@id='remove-sauce-labs-backpack']");
+    private static final By PRODUCTS_PRICE = By.xpath(
+            "//div[@class= 'cart_item']/descendant::div[@class = 'inventory_item_price']");
 
     public CartPage(WebDriver driver) {
         super(driver);
     }
 
-    public void open() {
-        driver.get(BASE_URL + "/cart.html");
-    }
-
     public boolean isProductInCart(String product) {
-        return driver.findElement(By.xpath(String.format("//div[@class='cart_item']//*[text()='%s']", product)))
+        return driver.findElement(By.xpath(String.format("//*[@class = 'cart_item']//*[text() = '%s']", product)))
                 .isDisplayed();
     }
 
-    public String getProductFromCart(int index) {
-        return driver.findElements(By.cssSelector(".inventory_item_name"))
-                .get(index)
-                .getText();
+    public Double getProductPrice(int index) {
+        List<WebElement> productsName = driver.findElements(PRODUCTS_PRICE);
+        return Double.parseDouble(productsName.get(index)
+                .getText()
+                .substring(productsName.get(index)
+                        .getText()
+                        .indexOf('$') + 1));
     }
 
-    public ArrayList<String> getProductsName() {
-        List<WebElement> allProductsElements = driver.findElements(By.cssSelector(".inventory_item_name"));
-        ArrayList<String> names = new ArrayList<>();
-        for (WebElement product : allProductsElements) {
-            names.add(product.getText());
-        }
-        return names;
+    public void removeProduct(String product) {
+        driver.findElement(By.xpath(String.format("//button[@id='remove-sauce-labs-backpack']", product))).click();
     }
 
-    public double getProductPrice(String product) {
-        return Double.parseDouble(driver.findElement(
-                        By.xpath(String.format(
-                                "//*[text() = '%s']/ancestor::div[@class='cart_item']//" +
-                                        "*[@class = 'inventory_item_price']", product)))
-                .getText().replace("$", ""));
+    public boolean checkEmptyState() {
+        return driver.findElements(By.xpath("//div[@class='cart_item']")).isEmpty();
     }
 }
