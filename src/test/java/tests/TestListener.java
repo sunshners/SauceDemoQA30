@@ -1,5 +1,7 @@
 package tests;
 
+import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -7,28 +9,35 @@ import org.testng.ITestResult;
 import java.util.concurrent.TimeUnit;
 
 
+@Log4j2
 public class TestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult iTestResult) {
-        System.out.printf("======================================== STARTING TEST %s ========================================%n", iTestResult.getName());
+        log.info("======================================== STARTING TEST {} ========================================%n", iTestResult.getName());
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.printf("======================================== FINISHED TEST %s Duration: %ss ========================================%n", iTestResult.getName(),
+        log.info("======================================== FINISHED TEST {} Duration: {} ========================================%n", iTestResult.getName(),
                 getExecutionTime(iTestResult));
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        System.out.printf("======================================== FAILED TEST %s Duration: %ss ========================================%n", iTestResult.getName(),
+        log.error("======================================== FAILED TEST {} Duration: {} ========================================%n", iTestResult.getName(),
                 getExecutionTime(iTestResult));
+        ITestContext context = iTestResult.getTestContext();
+        WebDriver driver = (WebDriver) context.getAttribute("driver");
+        takeScreenshot(driver);
+    }
+
+    private void takeScreenshot(WebDriver driver) {
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        System.out.printf("======================================== SKIPPING TEST %s ========================================%n", iTestResult.getName());
+        log.warn("======================================== SKIPPING TEST {} ========================================%n", iTestResult.getName());
     }
 
     @Override

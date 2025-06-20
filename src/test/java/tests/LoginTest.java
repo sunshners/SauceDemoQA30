@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
@@ -20,7 +21,7 @@ public class LoginTest extends BaseTest {
         loginPage.open();
         loginPage.login(user, "");
         assertEquals(loginPage.getErrorMessage(),
-                "Epic sadface: Password is requred",
+                "Epic sadface: Password is required",
                 "SO BAAAAD");
     }
 
@@ -30,15 +31,26 @@ public class LoginTest extends BaseTest {
         loginPage.open();
         loginPage.login(user, "123123123123");
         assertEquals(loginPage.getErrorMessage(),
-                "Epic sadface: Password is requred",
+                "Epic sadface: Password is required",
                 "SO BAAAAD");
     }
 
-    @Test(dataProvider = "Hегативные тесты для логина")
-    public void login() {
+    @Test(dataProvider = "negativeLoginTests")
+    public void login(String user, String password, String expectedErrorMessage) {
         loginPage.open();
         loginPage.login(user, password);
         assertEquals(loginPage.getErrorMessage(),
-                "SO BAAAAD");
+                expectedErrorMessage,
+                "Неверное сообщение об ошибке");
+    }
+
+    @DataProvider(name = "negativeLoginTests")
+    public Object[][] negativeLoginData() {
+        return new Object[][] {
+                {user, "", "Epic sadface: Password is required"},
+                {user, "wrong", "Epic sadface: Username and password do not match any user in this service"},
+                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."}
+        };
     }
 }
