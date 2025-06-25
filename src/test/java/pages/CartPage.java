@@ -8,7 +8,7 @@ import java.util.List;
 
 @Log4j2
 public class CartPage extends BasePage {
-    public final By REMOVE_BUTTON = By.xpath("//button[@id='remove-sauce-labs-backpack']");
+    public final String REMOVE_BUTTON = "//*[contains(text(),'%s')]/ancestor::div[@class='cart_item']//button";
     private static final By PRODUCTS_PRICE = By.xpath(
             "//div[@class= 'cart_item']/descendant::div[@class = 'inventory_item_price']");
 
@@ -49,7 +49,7 @@ public class CartPage extends BasePage {
 
     public void removeProduct(String product) {
         log.info("Remove product {} from cart", product);
-        driver.findElement(By.xpath(String.format(product, REMOVE_BUTTON))).click();
+        driver.findElement(By.xpath(String.format(REMOVE_BUTTON, product))).click();
     }
 
     public boolean checkEmptyState() {
