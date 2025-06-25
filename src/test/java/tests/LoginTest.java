@@ -27,6 +27,15 @@ public class LoginTest extends BaseTest {
                 "SO BAAAAD");
     }
 
+    @Test(testName = "Проверка логина с пустым логином", priority = 2, groups = "Login Page")
+    public void checkLoginWithEmptyUsername(){
+        loginPage.open();
+        loginPage.login("", password);
+        assertEquals(loginPage.getErrorMessage(),
+                "Epic sadface: Username is required",
+                "SO BAAAAD");
+    }
+
 
     @Test(testName = "Проверка входа с неверным паролем", priority = 3, groups = "Login Page")
     public void checkLoginWithWrongPassword(){
@@ -35,24 +44,5 @@ public class LoginTest extends BaseTest {
         assertEquals(loginPage.getErrorMessage(),
                 "Epic sadface: Username and password do not match any user in this service",
                 "SO BAAAAD");
-    }
-
-    @Test(dataProvider = "negativeLoginTests")
-    public void login(String user, String password, String expectedErrorMessage) {
-        loginPage.open();
-        loginPage.login(user, password);
-        assertEquals(loginPage.getErrorMessage(),
-                expectedErrorMessage,
-                "Неверное сообщение об ошибке");
-    }
-
-    @DataProvider(name = "negativeLoginTests")
-    public Object[][] negativeLoginData() {
-        return new Object[][] {
-                {user, "", "Epic sadface: Password is required"},
-                {user, "wrong", "Epic sadface: Username and password do not match any user in this service"},
-                {"", "secret_sauce", "Epic sadface: Username is required"},
-                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."}
-        };
     }
 }
