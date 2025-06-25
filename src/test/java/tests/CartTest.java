@@ -9,7 +9,7 @@ public class CartTest extends BaseTest {
     @Test
     public void checkCart() {
             loginPage.open();
-            loginPage.login("standard_user", "secret_sauce");
+            loginPage.login(user, password);
             productsPage.addProduct("Sauce Labs Backpack");
             productsPage.addProduct("Sauce Labs Bike Light");
             productsPage.openCart();
@@ -20,7 +20,7 @@ public class CartTest extends BaseTest {
     @Test(testName = "Добавление товара в корзину", priority = 2, groups = "Cart Page")
     public void addToCart() {
         loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(user, password);
         productsPage.addProduct("Sauce Labs Backpack");
         productsPage.openCart();
         assertTrue(cartPage.isProductInCart("Sauce Labs Backpack"),
@@ -32,7 +32,7 @@ public class CartTest extends BaseTest {
     @Test(testName = "Проверка стоимости товара", priority = 3, groups = "Cart Page")
     public void checkProductsPrice() {
         loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(user, password);
         productsPage.addProduct("Sauce Labs Backpack");
         productsPage.openCart();
         Assert.assertEquals(cartPage.getProductPrice(0), 29.99);

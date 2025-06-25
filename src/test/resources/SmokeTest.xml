@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="2" name="SauceDemo Smoke Test" parallel="tests">
     <listeners>
-        <listener class-name="tests.TestListener">
+        <listener class-name="utils.TestListener">
         </listener>
     </listeners>
     <test name="Tread 1">

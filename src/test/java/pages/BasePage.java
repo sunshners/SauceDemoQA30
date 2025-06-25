@@ -6,8 +6,6 @@ import java.time.Duration;
 
 public abstract class BasePage {
 
-    public abstract LoginPage open();
-
     WebDriver driver;
     WebDriverWait wait;
 
@@ -17,7 +15,4 @@ public abstract class BasePage {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-
-
-    public abstract BasePage isPageOpened();
 }

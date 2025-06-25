@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 @Log4j2
-public abstract class CartPage extends BasePage {
+public class CartPage extends BasePage {
     public final By REMOVE_BUTTON = By.xpath("//button[@id='remove-sauce-labs-backpack']");
     private static final By PRODUCTS_PRICE = By.xpath(
             "//div[@class= 'cart_item']/descendant::div[@class = 'inventory_item_price']");
@@ -48,15 +48,8 @@ public abstract class CartPage extends BasePage {
     }
 
     public void removeProduct(String product) {
-        log.info("Removing product '{}' from cart", product);
-        try {
-            driver.findElement(By.xpath(String.format(
-                    "//button[@id='remove-sauce-labs-backpack']", product))).click();
-            log.debug("Product '{}' removed successfully", product);
-        } catch (Exception e) {
-            log.error("Failed to remove product '{}': {}", product, e.getMessage());
-            throw e;
-        }
+        log.info("Remove product {} from cart", product);
+        driver.findElement(By.xpath(String.format(product, REMOVE_BUTTON))).click();
     }
 
     public boolean checkEmptyState() {

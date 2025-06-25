@@ -18,12 +18,6 @@ public class LoginPage extends BasePage {
         log.debug("Initializing LoginPage");
     }
 
-    @Override
-    public BasePage isPageOpened() {
-        return null;
-    }
-
-
     public LoginPage open() {
         log.info("Opening login page at URL: {}", BASE_URL);
         try {
@@ -34,11 +28,10 @@ public class LoginPage extends BasePage {
             log.error("Failed to open login page: {}", e.getMessage());
             throw e;
         }
-        return null;
+        return this;
     }
 
-
-    public void login(String user, String password) {
+    public ProductsPage login(String user, String password) {
         log.info("Attempting to login with username: {}", user);
         try {
             log.debug("Entering username");
@@ -51,6 +44,7 @@ public class LoginPage extends BasePage {
             driver.findElement(LOGIN_BUTTON).click();
 
             log.info("Login attempt completed");
+            return new ProductsPage(driver);
         } catch (Exception e) {
             log.error("Login failed: {}", e.getMessage());
             throw e;
@@ -68,22 +62,5 @@ public class LoginPage extends BasePage {
             log.error("Failed to get error message: {}", e.getMessage());
             throw e;
         }
-    }
-
-    public BasePage successfulLogin(String user, String password) {
-        login(user, password);
-        log.info("Login successful for user: {}", user);
-        return new BasePage(driver) {
-
-            @Override
-            public LoginPage open() {
-                return null;
-            }
-
-            @Override
-            public BasePage isPageOpened() {
-                return null;
-            }
-        };
     }
 }
