@@ -54,7 +54,7 @@ public class ProductsPage extends BasePage {
         }
     }
 
-    public List getAllProductNames() {
+    public List<String> getAllProductNames() {
         List<String> names = new ArrayList<>();
         for (WebElement el : driver.findElements(UNIVERSAL_PRODUCT_NAME)) {
             names.add(el.getText());
@@ -62,7 +62,7 @@ public class ProductsPage extends BasePage {
         return names;
     }
 
-    public List getAllProductPrices() {
+    public List<Double> getAllProductPrices() {
         List<Double> prices = new ArrayList<>();
         for (WebElement el : driver.findElements(UNIVERSAL_PRODUCT_PRICE)) {
             prices.add(Double.parseDouble(el.getText().replaceAll("\\$", "")));
